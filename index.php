@@ -61,227 +61,110 @@ if ($result) {
     <title>Fruit Quiz Game</title>
     <style>
         :root {
-            --primary-color: #2ecc71;
-            --secondary-color: #27ae60;
-            --accent-color: #e74c3c;
-            --background-color: #ecf0f1;
-            --text-color: #2c3e50;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --primary-color: #4CAF50;
+            --secondary-color: #45a049;
+            --accent-color: #f4511e;
+            --background-color: #f9f9f9;
+            --text-color: #333;
         }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .game-container {
             background-color: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: var(--shadow);
-            margin: 20px auto;
-            transition: all 0.3s ease;
-            max-width: 800px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .game-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            transition: transform 0.2s;
         }
 
         .game-container:hover {
             transform: translateY(-5px);
-            box-shadow: var(--hover-shadow);
         }
 
         h1 {
-            color: var(--text-color);
+            color: var(--primary-color);
             margin-bottom: 30px;
-            font-size: 2.8em;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            letter-spacing: -0.5px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .choices {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin: 30px auto;
-            max-width: 700px;
-            padding: 0 20px;
+            gap: 15px;
+            margin: 25px auto;
+            max-width: 600px;
         }
 
         .choice-btn {
-            padding: 20px 30px;
+            padding: 15px 25px;
             font-size: 18px;
             cursor: pointer;
             background-color: white;
             border: 2px solid var(--primary-color);
-            border-radius: 15px;
+            border-radius: 10px;
             transition: all 0.3s ease;
             color: var(--primary-color);
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .choice-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--primary-color);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-            z-index: 0;
+            font-weight: 500;
         }
 
         .choice-btn:hover {
+            background-color: var(--primary-color);
             color: white;
             transform: scale(1.02);
-            box-shadow: var(--shadow);
-        }
-
-        .choice-btn:hover::before {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        .choice-btn span {
-            position: relative;
-            z-index: 1;
         }
 
         .score {
-            font-size: 32px;
+            font-size: 28px;
             margin: 25px 0;
             color: var(--primary-color);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .score i {
-            color: #f1c40f;
-            animation: pulse 2s infinite;
+            font-weight: bold;
         }
 
         .question-count {
-            font-size: 22px;
+            font-size: 20px;
             margin-bottom: 25px;
-            color: #7f8c8d;
+            color: #666;
             font-weight: 500;
-            letter-spacing: 0.5px;
         }
 
-        .progress-container {
-            margin: 30px 0;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 12px;
-            background-color: #eee;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress {
-            height: 100%;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            transition: width 0.5s ease;
-            width: calc(<?php echo $_SESSION['question_count']; ?> * 10%);
-            border-radius: 10px;
-            position: relative;
-        }
-
-        .progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                90deg,
-                rgba(255,255,255,0.1) 25%,
-                transparent 25%,
-                transparent 50%,
-                rgba(255,255,255,0.1) 50%,
-                rgba(255,255,255,0.1) 75%,
-                transparent 75%
-            );
-            background-size: 30px 30px;
-            animation: progress-animation 1s linear infinite;
-        }
-
-        @keyframes progress-animation {
-            0% { background-position: 0 0; }
-            100% { background-position: 30px 0; }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .high-scores {
+            margin-top: 30px;
+            text-align: left;
         }
 
         table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            margin: 30px 0;
+            margin: 20px 0;
             background-color: white;
-            border-radius: 15px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
         }
 
         th {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background-color: var(--primary-color);
             color: white;
             font-weight: 600;
-            padding: 15px 20px;
-            text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-
-        td {
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
-            transition: all 0.3s ease;
         }
 
         tr:last-child td {
@@ -289,153 +172,88 @@ if ($result) {
         }
 
         tr:hover td {
-            background-color: #f8f9fa;
-            transform: scale(1.01);
+            background-color: #f5f5f5;
         }
 
         input[type="text"] {
-            padding: 15px 25px;
-            margin: 20px 0;
+            padding: 12px 20px;
+            margin: 15px 0;
             border: 2px solid #ddd;
-            border-radius: 12px;
-            font-size: 18px;
-            width: 300px;
-            transition: all 0.3s ease;
-            background-color: #f8f9fa;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 250px;
+            transition: border-color 0.3s;
         }
 
         input[type="text"]:focus {
             border-color: var(--primary-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
-            background-color: white;
         }
 
         button, .button {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background-color: var(--primary-color);
             color: white;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 12px;
-            font-size: 18px;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            margin: 15px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        button::before, .button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255, 255, 255, 0.3),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        button:hover::before, .button:hover::before {
-            left: 100%;
+            margin: 10px;
+            font-weight: 500;
         }
 
         button:hover, .button:hover {
+            background-color: var(--secondary-color);
             transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+            width: calc(<?php echo $_SESSION['question_count']; ?> * 10%);
         }
 
         .creator-credit {
-            margin-top: 40px;
+            margin-top: 30px;
             font-style: italic;
-            color: #95a5a6;
-            font-size: 16px;
-            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+            color: #666;
+            font-size: 14px;
         }
 
         .game-title {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 40px;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         .game-title i {
-            font-size: 2.5em;
-            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            font-size: 2em;
+            color: var(--primary-color);
         }
 
         .result-message {
-            font-size: 28px;
-            margin: 30px 0;
-            padding: 25px;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #e8f5e9;
             color: var(--primary-color);
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .result-message::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                45deg,
-                rgba(255,255,255,0.1) 25%,
-                transparent 25%,
-                transparent 50%,
-                rgba(255,255,255,0.1) 50%,
-                rgba(255,255,255,0.1) 75%,
-                transparent 75%
-            );
-            background-size: 20px 20px;
-            animation: shine 1s linear infinite;
-        }
-
-        @keyframes shine {
-            0% { background-position: 0 0; }
-            100% { background-position: 20px 0; }
-        }
-
-        .welcome-text {
-            font-size: 20px;
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto 30px;
-        }
-
-        .start-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -449,53 +267,48 @@ if ($result) {
                 <h1>Fruit Quiz Game</h1>
                 <i class="fas fa-lemon"></i>
             </div>
-            <p class="welcome-text">Challenge yourself with our exciting fruit quiz! Test your knowledge of different fruits and compete for the highest score. Are you ready to begin?</p>
+            <p>Test your knowledge of fruits in this fun and challenging quiz!</p>
             <form method="POST" class="start-form">
                 <input type="text" name="username" placeholder="Enter your name" required>
+                <br>
                 <button type="submit"><i class="fas fa-play"></i> Start Game</button>
             </form>
         </div>
-        <p class="creator-credit">Designed with <i class="fas fa-heart" style="color: #e74c3c;"></i> by Anwar Gwapo</p>
+        <p class="creator-credit">Developed by: Anwar Jervis</p>
 
     <?php elseif (isset($_GET['show_results'])): ?>
         <!-- Results Screen -->
         <div class="game-container">
             <h1><i class="fas fa-trophy"></i> Game Over!</h1>
             <div class="result-message">
-                <i class="fas fa-star"></i> Your final score: <?php echo isset($_SESSION['final_score']) ? $_SESSION['final_score'] : 0; ?>/10
+                Your final score: <?php echo isset($_SESSION['final_score']) ? $_SESSION['final_score'] : 0; ?>/10
             </div>
-            <h2><i class="fas fa-crown"></i> High Scores</h2>
+            <h2><i class="fas fa-star"></i> High Scores</h2>
             <table>
                 <tr>
-                    <th><i class="fas fa-calendar"></i> Date</th>
-                    <th><i class="fas fa-user"></i> Player</th>
+                    <th><i class="fas fa-calendar"></i> Date Played</th>
+                    <th><i class="fas fa-user"></i> Username</th>
                     <th><i class="fas fa-star"></i> Score</th>
-                    <th><i class="fas fa-clock"></i> Time</th>
+                    <th><i class="fas fa-clock"></i> Time (seconds)</th>
                 </tr>
                 <?php foreach ($highScores as $score): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($score->date_played); ?></td>
                     <td><?php echo htmlspecialchars($score->username); ?></td>
                     <td><?php echo $score->score; ?>/10</td>
-                    <td><?php echo $score->time; ?>s</td>
+                    <td><?php echo $score->time; ?> seconds</td>
                 </tr>
                 <?php endforeach; ?>
             </table>
             <a href="index.php" class="button"><i class="fas fa-redo"></i> Play Again</a>
         </div>
-
     <?php else: ?>
         <!-- Game Screen -->
         <div class="game-container">
-            <div class="score">
-                <i class="fas fa-star"></i>
-                Score: <?php echo $_SESSION['score']; ?>
-            </div>
+            <div class="score"><i class="fas fa-star"></i> Score: <?php echo $_SESSION['score']; ?></div>
             <div class="question-count">Question <?php echo $_SESSION['question_count'] + 1; ?> of 10</div>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress"></div>
-                </div>
+            <div class="progress-bar">
+                <div class="progress"></div>
             </div>
             <?php
             // Get all unused fruits first
